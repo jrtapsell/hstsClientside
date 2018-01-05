@@ -13,7 +13,7 @@ object ChromeFactory: ProviderFactory {
     override fun initialise(): Promise<Provider> {
         console.log("Started loading chrome data")
         return Promise{resolve, reject ->
-            withText("https://agitated-colden-c5fdf6.netlify.com/chrome-versions") {
+            withText("/firefox/chrome-versions") {
                 console.log("Chrome versions data found")
                 val versions = JSON.parse<VersionsResponse>(it)
 
@@ -24,7 +24,7 @@ object ChromeFactory: ProviderFactory {
                 val liveHashes = all.map { it.commit }.distinct()
 
                 val promises = liveHashes.map { hash ->
-                    val url = "https://agitated-colden-c5fdf6.netlify.com/chromium/chromium/src/+/$hash/net/http/transport_security_state_static.json?format=TEXT"
+                    val url = "/firefox/chromium/chromium/src/+/$hash/net/http/transport_security_state_static.json?format=TEXT"
                     withText(url, true) {
                         val raw = atob(it)
                         val lines = raw.split("\n")
