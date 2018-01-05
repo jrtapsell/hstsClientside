@@ -57,10 +57,11 @@ object UI {
             false
         }
         Main.init().then {
-            console.log("Loaded")
+            console.timeStamp("Loaded")
             loadingScreen.hidden = true
             mainScreen.hidden = false
         }.catch {
+            console.timeStamp("Failed")
             loadingScreen.hidden = true
             failScreen.hidden = false
         }
