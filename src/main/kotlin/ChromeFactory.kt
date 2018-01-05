@@ -11,10 +11,10 @@ data class Site(val name: String, val include_subdomains: Boolean)
 object ChromeFactory: ProviderFactory {
     data class Version(val os:String, val branch: String, val commit: String, val versionNumber: Release)
     override fun initialise(): Promise<Provider> {
-        Console.timeStamp("Chrome: Start")
+        console.timeStamp("Chrome: Start")
         return Promise{resolve, reject ->
             withText("/chrome-versions") {
-                Console.timeStamp("Chrome: Versions found")
+                console.timeStamp("Chrome: Versions found")
                 val versions = JSON.parse<VersionsResponse>(it)
 
                 val all = versions.flatMap { os -> os.versions.map { os to it } }
@@ -47,7 +47,7 @@ object ChromeFactory: ProviderFactory {
                         dataStore.getOrPut(os, { mutableMapOf() })
                             .put(release, allData[commit]?.toMutableMap() ?: mutableMapOf())
                     }
-                    Console.timeStamp("Chrome: End")
+                    console.timeStamp("Chrome: End")
                     resolve(Provider("Chrome", dataStore))
                 }, reject)
             }.catch(reject)

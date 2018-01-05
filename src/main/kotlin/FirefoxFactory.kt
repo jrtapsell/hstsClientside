@@ -8,7 +8,7 @@ object FirefoxFactory : ProviderFactory {
             "mozilla-release" to "Release"
     )
     override fun initialise(): Promise<Provider> {
-        Console.timeStamp("Firefox: Start")
+        console.timeStamp("Firefox: Start")
         return Promise{resolve, reject ->
             val releasePromises = releases.map { (releaseBranch, name) ->
                 Promise.all(arrayOf(getReleaseDetails(releaseBranch, name), getVersionNumber(releaseBranch)))
@@ -19,7 +19,7 @@ object FirefoxFactory : ProviderFactory {
                     releaseString as String
                     Release(data.first, releaseString) to data.second
                 }
-                Console.timeStamp("Firefox: End")
+                console.timeStamp("Firefox: End")
                 resolve(Provider("Firefox", mapOf("all" to data)))
             }, reject)
         }
