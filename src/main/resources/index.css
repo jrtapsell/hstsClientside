@@ -1,0 +1,17 @@
+.treeDiv {
+    margin-left: 5em;
+}
+
+.state-none {
+    background: #c77;
+}
+.state-single {
+    background: #cc7;
+}
+.state-domain {
+    background: #7c7;
+}
+
+.jumbotron {
+    text-align: center;
+}

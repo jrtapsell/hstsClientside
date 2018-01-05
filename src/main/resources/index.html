@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="kotlin.js"></script>
+        <script src="clientSideHSTS.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">HSTS info</span>
+                </div>
+            </header>
+            <main class="mdl-layout__content">
+                <div class="page-content" id="loading-view">
+                    <h1 class="jumbotron">Loading data, please wait</h1>
+                    <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate mdl-cell mdl-cell--12-col"></div>
+                </div>
+                <div class="page-content" id="main-view">
+                    <form id="searchForm" class="mdl-cell--12-col mdl-grid">
+                        <div class="mdl-textfield mdl-js-textfield mdl-cell--10-col mdl-cell">
+                            <input class="mdl-textfield__input" id="sitename">
+                            <label class="mdl-textfield__label" for="sitename">Domain...</label>
+                        </div>
+                        <button id="search" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-cell mdl-cell--2-col">Search</button>
+                    </form>
+                    <div class="mdl-cell--12-col" id="searchResults"></div>
+                </div>
+                <div class="page-content" id="fail-view">
+                    <h1 class="jumbotron">
+                        Failed to load data, sorry
+                    </h1>
+                    <h2 class="jumbotron">Please refresh or try again later</h2>
+                </div>
+            </main>
+        </div>
+    </body>
+    <script>
+        clientSideHSTS.start()
+    </script>
+</html>
