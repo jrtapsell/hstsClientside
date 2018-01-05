@@ -16,7 +16,7 @@ object FirefoxFactory : ProviderFactory {
             Promise.all(releasePromises).then ({
                 val data = it.associate { (data, releaseString) ->
                     data as Pair<String, Map<String, Boolean>>
-                    val r = releaseString as String
+                    releaseString as String
                     Release(data.first, releaseString) to data.second
                 }
                 console.log("Loaded firefox data")
@@ -27,13 +27,12 @@ object FirefoxFactory : ProviderFactory {
 
     private fun getReleaseDetails(releaseBranch: String, name: String): Promise<Pair<String, Map<String, Boolean>>> {
         return Promise { resolve, reject ->
-            val versionHashes = releases.map { (branchName, name) ->
-                withText("/firefox/releases/$branchName/rss-log") {
+                withText("/firefox/releases/$name/rss-log") {
                     val tree = DOMParser().parseFromString(it, "text/xml")
                     val link = tree.getElementsByTagName("guid").get(0)!!.textContent!!
                     val parts = link.split("/")
                     val hash = parts[parts.size - 1]
-                    withText("/firefox/releases/$branchName/raw-file/$hash/security/manager/ssl/nsSTSPreloadList.inc", true) {
+                    withText("/firefox/releases/$releaseBranch/raw-file/$hash/security/manager/ssl/nsSTSPreloadList.inc", true) {
                         val lines = it.split("\n")
                             .map { it.trim() }
                         val start = lines.indexOf("%%")
@@ -48,7 +47,6 @@ object FirefoxFactory : ProviderFactory {
             }
 
         }
-    }
 
     private fun getVersionNumber(releaseBranch: String): Promise<String> {
         return withText("/firefox/releases/$releaseBranch/raw-file/tip/browser/config/version_display.txt") {

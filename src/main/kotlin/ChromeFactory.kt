@@ -43,7 +43,7 @@ object ChromeFactory: ProviderFactory {
                                     Release,
                                     Map<String, Boolean>>>()
                     val allData = it.associate { it }
-                    val pools = all.forEach { (os, branch, commit, release) ->
+                    all.forEach { (os, _, commit, release) ->
                         dataStore.getOrPut(os, { mutableMapOf() })
                             .put(release, allData[commit]?.toMutableMap() ?: mutableMapOf())
                     }
