@@ -27,7 +27,7 @@ object FirefoxFactory : ProviderFactory {
 
     private fun getReleaseDetails(releaseBranch: String, name: String): Promise<Pair<String, Map<String, Boolean>>> {
         return Promise { resolve, reject ->
-                withText("/firefox/releases/$name/rss-log") {
+                withText("/firefox/releases/$releaseBranch/rss-log") {
                     val tree = DOMParser().parseFromString(it, "text/xml")
                     val link = tree.getElementsByTagName("guid").get(0)!!.textContent!!
                     val parts = link.split("/")
