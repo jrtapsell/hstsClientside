@@ -15,3 +15,32 @@
 .jumbotron {
     text-align: center;
 }
+
+.version {
+    display: inline-block;
+    float: right;
+}
+
+.versionChunk-middle::after {
+    content: ".";
+}
+
+.versionChunk {
+    display: inline-block;
+}
+
+.versionChunk-0 {
+    font-size: 1.4em;
+}
+
+.versionChunk-1 {
+    font-size: 1.3em;
+}
+
+.versionChunk-2 {
+    font-size: 1.2em;
+}
+
+.versionChunk-3 {
+    font-size: 1.1em;
+}

@@ -45,11 +45,14 @@ object UI {
                                 releasePart.forEachIndexed { index, partText ->
                                     val last = index == releasePart.size - 1
                                     div {
-                                        textContent = partText
-                                        addClass("versionChunk")
-                                        addClass("versionChunk-$index")
-                                        if (!last) {
-                                            addClass("versionChunk-middle")
+                                        addClass("version")
+                                        div {
+                                            textContent = partText
+                                            addClass("versionChunk")
+                                            addClass("versionChunk-$index")
+                                            if (!last) {
+                                                addClass("versionChunk-middle")
+                                            }
                                         }
                                     }
                                 }
