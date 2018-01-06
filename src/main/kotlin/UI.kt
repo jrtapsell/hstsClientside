@@ -40,7 +40,19 @@ object UI {
                                 DomainState.INCLUDE_SUBDOMAINS -> "state-domain"
                             }
                             div {
-                                textContent = "${release.name} [${release.version}]"
+                                textContent = "${release.name}"
+                                val releasePart = release.version.split(".")
+                                releasePart.forEachIndexed { index, partText ->
+                                    val last = index == releasePart.size - 1
+                                    div {
+                                        textContent = partText
+                                        addClass("versionChunk")
+                                        addClass("versionChunk-$index")
+                                        if (!last) {
+                                            addClass("versionChunk-middle")
+                                        }
+                                    }
+                                }
                                 addClass("treeDiv")
                                 addClass(css)
                             }
