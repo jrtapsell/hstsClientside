@@ -34,9 +34,9 @@ object ChromeFactory: ProviderFactory {
                         val data = JSON.parse<JSONData>(lines)
                         hash to data.entries.associate { it.name to it.include_subdomains }
                     }
-                }.toTypedArray()
+                }
 
-                Promise.all(promises).then ({
+                promises.all().then ({
                     val dataStore = mutableMapOf<
                             String,
                             MutableMap<

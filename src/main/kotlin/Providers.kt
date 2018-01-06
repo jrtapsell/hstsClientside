@@ -3,10 +3,8 @@ import kotlin.js.Promise
 object Main {
 
     fun init(): Promise<Unit> {
-        val promises = factories.map { it.initialise() }.toTypedArray()
-        return Promise.all(promises).then {
-            providers = it.toList()
-        }
+        val promises = factories.map { it.initialise() }
+        return promises.all().then { providers = it.toList() }
     }
 
     private val factories: List<ProviderFactory> = listOf(ChromeFactory, FirefoxFactory)

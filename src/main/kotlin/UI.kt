@@ -3,8 +3,8 @@ import org.w3c.dom.HTMLFormElement
 import org.w3c.dom.HTMLInputElement
 import kotlin.browser.document
 import kotlin.browser.window
+import kotlin.dom.addClass
 import kotlin.dom.clear
-import kotlin.js.Promise
 
 /**
  * @author James Tapsell
@@ -26,24 +26,31 @@ object UI {
         val data = Main.test(domain)
         searchResults.clear()
         for ((browser, browserData) in data) {
-            val browserDiv = makeDiv(browser, "treeDiv")
-            searchResults.appendChild(browserDiv)
-            for ((platform, platformData) in browserData) {
-                val platformDiv = makeDiv(platform, "treeDiv")
-                browserDiv.appendChild(platformDiv)
-                for ((release, releaseData) in platformData) {
-                    val css = when (releaseData) {
-                        DomainState.NONE -> "state-none"
-                        DomainState.JUST_DOMAIN -> "state-single"
-                        DomainState.INCLUDE_SUBDOMAINS -> "state-domain"
+            searchResults.div {
+                textContent = browser
+                addClass("treeDiv")
+                for ((platform, platformData) in browserData) {
+                    div {
+                        textContent = platform
+                        addClass("treeDiv")
+                        for ((release, releaseData) in platformData) {
+                            val css = when (releaseData) {
+                                DomainState.NONE -> "state-none"
+                                DomainState.JUST_DOMAIN -> "state-single"
+                                DomainState.INCLUDE_SUBDOMAINS -> "state-domain"
+                            }
+                            div {
+                                textContent = "${release.name} [${release.version}]"
+                                addClass("treeDiv")
+                                addClass(css)
+                            }
+                        }
                     }
-                    val releaseDiv = makeDiv("${release.name} [${release.version}]", "treeDiv", css)
-                    platformDiv.appendChild(releaseDiv)
+
                 }
             }
         }
     }
-
 
     fun run() {
         mainScreen.hidden = true
@@ -65,6 +72,12 @@ object UI {
             loadingScreen.hidden = true
             failScreen.hidden = false
         }
+    }
+
+    inline fun HTMLDivElement.div(block: (HTMLDivElement.()->Unit)) {
+        val child = document.createElement("div") as HTMLDivElement
+        child.block()
+        appendChild(child)
     }
 
     fun makeDiv(text: String, vararg classes: String): HTMLDivElement {

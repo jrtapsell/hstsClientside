@@ -3,20 +3,20 @@ import org.w3c.dom.parsing.DOMParser
 import kotlin.js.Promise
 
 object FirefoxFactory : ProviderFactory {
+
     val releases = listOf(
             "mozilla-beta" to "Beta",
             "mozilla-release" to "Release"
     )
+
     override fun initialise(): Promise<Provider> {
         console.timeStamp("Firefox: Start")
         return Promise{resolve, reject ->
             val releasePromises = releases.map { (releaseBranch, name) ->
-                Promise.all(arrayOf(getReleaseDetails(releaseBranch, name), getVersionNumber(releaseBranch)))
-            }.toTypedArray()
-            Promise.all(releasePromises).then ({
+                (getReleaseDetails(releaseBranch, name) to getVersionNumber(releaseBranch)).all()
+            }
+            releasePromises.all().then ({
                 val data = it.associate { (data, releaseString) ->
-                    data as Pair<String, Map<String, Boolean>>
-                    releaseString as String
                     Release(data.first, releaseString) to data.second
                 }
                 console.timeStamp("Firefox: End")
@@ -29,7 +29,7 @@ object FirefoxFactory : ProviderFactory {
         return Promise { resolve, reject ->
                 withText("/firefox/releases/$releaseBranch/rss-log") {
                     val tree = DOMParser().parseFromString(it, "text/xml")
-                    val link = tree.getElementsByTagName("guid").get(0)!!.textContent!!
+                    val link = tree.getElementsByTagName("guid")[0]!!.textContent!!
                     val parts = link.split("/")
                     val hash = parts[parts.size - 1]
                     withText("/firefox/releases/$releaseBranch/raw-file/$hash/security/manager/ssl/nsSTSPreloadList.inc", true) {
@@ -49,9 +49,7 @@ object FirefoxFactory : ProviderFactory {
         }
 
     private fun getVersionNumber(releaseBranch: String): Promise<String> {
-        return withText("/firefox/releases/$releaseBranch/raw-file/tip/browser/config/version_display.txt") {
-            it
-        }
+        return withText("/firefox/releases/$releaseBranch/raw-file/tip/browser/config/version_display.txt")
     }
 
 }
