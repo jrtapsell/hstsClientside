@@ -42,10 +42,10 @@ object UI {
                             div {
                                 textContent = "${release.name}"
                                 val releasePart = release.version.split(".")
-                                releasePart.forEachIndexed { index, partText ->
-                                    val last = index == releasePart.size - 1
-                                    div {
-                                        addClass("version")
+                                div {
+                                    addClass("version")
+                                    releasePart.forEachIndexed { index, partText ->
+                                        val last = index == releasePart.size - 1
                                         div {
                                             textContent = partText
                                             addClass("versionChunk")
@@ -89,7 +89,7 @@ object UI {
         }
     }
 
-    inline fun HTMLDivElement.div(block: (HTMLDivElement.()->Unit)) {
+    inline fun HTMLDivElement.div(block: (HTMLDivElement.() -> Unit)) {
         val child = document.createElement("div") as HTMLDivElement
         child.block()
         appendChild(child)
