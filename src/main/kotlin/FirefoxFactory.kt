@@ -39,7 +39,7 @@ object FirefoxFactory : ProviderFactory {
                         val end = lines.lastIndexOf("%%")
                         val usable = lines.subList(start + 1, end)
                         resolve(name to usable.associate {
-                            val (domain, subs) = it.split(",")
+                            val (domain, subs) = it.split(",").map { it.trim() }
                             domain to (subs == "1")
                         })
                     }.catch(reject)
